@@ -7,24 +7,30 @@ import android.support.v4.app.Fragment
 
 class MainActivity : AppCompatActivity() {
 
+    private val weatherFragment = WeatherFragment.newInstance()
+    private val mapFragment = MapFragment.newInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottomNavigation)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction().replace(R.id.container,
+                    WeatherFragment()).commit()
+        }
     }
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_weather -> {
-                val songsFragment = WeatherFragment.newInstance()
-                openFragment(songsFragment)
+                openFragment(weatherFragment)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation__map -> {
-                val albumsFragment = MapFragment.newInstance()
-                openFragment(albumsFragment)
+                openFragment(mapFragment)
                 return@OnNavigationItemSelectedListener true
             }
         }
