@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/destination_weather">
+
+    <fragment
+        android:id="@+id/destination_weather"
+        android:name="ru.devsoland.meteowashkotlin.WeatherFragment"
+        android:label="WeatherFragment" />
+    <fragment
+        android:id="@+id/destination_map"
+        android:name="ru.devsoland.meteowashkotlin.MapFragment"
+        android:label="MapFragment" />
+</navigation>

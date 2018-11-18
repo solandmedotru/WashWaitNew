@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_weather"
+        android:id="@+id/destination_weather"
         android:icon="@drawable/ic_weather"
         android:title="Weather" />
     <item
-        android:id="@+id/navigation__map"
+        android:id="@+id/destination_map"
         android:icon="@drawable/ic_map"
         android:title="Map" />
 </menu>
