@@ -1,4 +1,4 @@
-package ru.devsoland.meteowashkotlin
+package ru.devsoland.meteowashkotlin.ui.settings
 
 
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import ru.devsoland.meteowashkotlin.R
 
 class SettingsFragment : Fragment() {
 

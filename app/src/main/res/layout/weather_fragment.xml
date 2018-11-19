@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,150 +8,151 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/weather_card"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/weatherIcon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:contentDescription="weather icon"
-            android:src="@drawable/ic_sunny_intervals" />
+            android:src="@drawable/ic_sunny_intervals"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textTemp"
             style="@style/bigWhiteText"
-            app:layout_constraintEnd_toEndOf="@+id/weatherIcon"
-            app:layout_constraintStart_toStartOf="@+id/weatherIcon"
-            app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-10\u00B0C" />
+            android:text="-10\u00B0C"
+            app:layout_constraintEnd_toEndOf="@+id/weatherIcon"
+            app:layout_constraintStart_toStartOf="@+id/weatherIcon"
+            app:layout_constraintTop_toBottomOf="@+id/weatherIcon" />
 
         <TextView
             android:id="@+id/textHumidity"
             style="@style/smallWhiteText"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textBarometer"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="70%"
-            android:textColor="@color/whiteTextColor" />
+            android:textColor="@color/whiteTextColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textBarometer"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textTemp" />
 
         <TextView
             android:id="@+id/textBarometer"
             style="@style/smallWhiteText"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textHumidity"
-            app:layout_constraintEnd_toStartOf="@+id/textSpeedWind"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textHumidity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="1008 mPa"
-            android:textColor="@color/whiteTextColor" />
+            android:textColor="@color/whiteTextColor"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textHumidity"
+            app:layout_constraintEnd_toStartOf="@+id/textSpeedWind"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textHumidity" />
 
         <TextView
             android:id="@+id/textSpeedWind"
             style="@style/smallWhiteText"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textBarometer"
-            app:layout_constraintEnd_toStartOf="@+id/textWindDir"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textBarometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="5 m/s"
-            android:textColor="@color/whiteTextColor" />
+            android:textColor="@color/whiteTextColor"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textBarometer"
+            app:layout_constraintEnd_toStartOf="@+id/textWindDir"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textBarometer" />
 
         <TextView
             android:id="@+id/textWindDir"
             style="@style/smallWhiteText"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textBarometer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textSpeedWind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:text="wind East"
-            android:textColor="@color/whiteTextColor" />
+            android:textColor="@color/whiteTextColor"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textBarometer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textSpeedWind" />
 
         <ImageView
             android:id="@+id/imageCity"
-            app:layout_constraintBottom_toBottomOf="@id/textTemp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/weatherIcon"
-            app:layout_constraintTop_toTopOf="@id/weatherIcon"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/city8" />
+            android:src="@mipmap/city8"
+            app:layout_constraintBottom_toBottomOf="@id/textTemp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/weatherIcon"
+            app:layout_constraintTop_toTopOf="@id/weatherIcon" />
 
         <ImageView
-            app:layout_constraintBottom_toBottomOf="@id/imageCity"
-            app:layout_constraintEnd_toEndOf="@id/imageCity"
-            app:layout_constraintStart_toStartOf="@+id/imageCity"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:src="@drawable/car1" />
+            android:src="@drawable/car1"
+            app:layout_constraintBottom_toBottomOf="@id/imageCity"
+            app:layout_constraintEnd_toEndOf="@id/imageCity"
+            app:layout_constraintStart_toStartOf="@+id/imageCity" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/forecast_card"
+        android:id="@+id/forecast_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/weather_card"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/colorPrimaryDark">
+        app:layout_constraintTop_toBottomOf="@id/weather_card">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/weather_info"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/forecast_card"
+
+        <TextView
+            android:id="@+id/forecast_message"
+            style="@style/smallWhiteText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/card"
-            android:elevation="4dp">
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Сегодня отличный день что-бы помыть машину! А это вторая строка чтобы видеть "
+            android:textAlignment="center"
+            android:textColor="@color/whiteTextColor"
+            app:layout_constraintBottom_toTopOf="@+id/include"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/forecast_message"
-                style="@style/smallWhiteText"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="Сегодня отличный день что-бы помыть машину! А это вторая строка чтобы видеть "
-                android:textAlignment="center"
-                android:textColor="@color/whiteTextColor" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <include
+            android:id="@+id/include"
+            layout="@layout/forecast_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/forecast_message" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

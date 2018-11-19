@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         bottomNavigation?.let { NavigationUI.setupWithNavController(it, navController) }
@@ -33,5 +32,9 @@ class MainActivity : AppCompatActivity() {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         val navigated = NavigationUI.onNavDestinationSelected(item!!, navController)
         return navigated || super.onOptionsItemSelected(item)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(null, navController)
     }
 }
