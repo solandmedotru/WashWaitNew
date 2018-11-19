@@ -1,4 +1,4 @@
-package ru.devsoland
+package ru.devsoland.meteowashkotlin.ui.forecast
 
 import androidx.lifecycle.ViewModel
 
