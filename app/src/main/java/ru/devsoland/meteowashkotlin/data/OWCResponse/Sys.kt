@@ -2,9 +2,7 @@ package ru.devsoland.meteowashkotlin.data.OWCResponse
 
 data class Sys(
         val country: String,
-        val id: Int,
         val message: Double,
         val sunrise: Int,
-        val sunset: Int,
-        val type: Int
+        val sunset: Int
 )
