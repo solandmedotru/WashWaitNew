@@ -15,6 +15,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <TextView
+            android:id="@+id/tw_city_name"
+            style="@style/smallWhiteText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Moscow, Russia"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imageCity"
+            app:layout_constraintTop_toTopOf="@id/imageCity" />
+
         <ImageView
             android:id="@+id/weatherIcon"
             android:layout_width="120dp"
@@ -44,6 +57,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:drawableTop="@drawable/ic_weather"
             android:text="70%"
             android:textColor="@color/whiteTextColor"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -58,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:drawableTop="@drawable/ic_weather"
             android:text="1008 mPa"
             android:textColor="@color/whiteTextColor"
             app:layout_constraintBaseline_toBaselineOf="@+id/textHumidity"
@@ -71,6 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:drawableTop="@drawable/ic_weather"
             android:text="5 m/s"
             android:textColor="@color/whiteTextColor"
             app:layout_constraintBaseline_toBaselineOf="@+id/textBarometer"
@@ -85,6 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:drawableTop="@drawable/ic_sunny_intervals"
             android:text="wind East"
             android:textColor="@color/whiteTextColor"
             app:layout_constraintBaseline_toBaselineOf="@+id/textBarometer"

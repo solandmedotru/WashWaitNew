@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/destination_weather"
-        android:name="ru.devsoland.meteowashkotlin.ui.weather.WeatherFragment"
+        android:name="ru.solandme.washwait.ui.weather.WeatherFragment"
         android:label="WeatherFragment"
         tools:layout="@layout/weather_fragment"/>
     <fragment
         android:id="@+id/destination_map"
-        android:name="ru.devsoland.meteowashkotlin.ui.map.MapFragment"
+        android:name="ru.solandme.washwait.ui.map.MapFragment"
         android:label="MapFragment"
         tools:layout="@layout/map_fragment"/>
     <fragment
         android:id="@+id/destination_settings"
-        android:name="ru.devsoland.meteowashkotlin.ui.settings.SettingsFragment"
+        android:name="ru.solandme.washwait.ui.settings.SettingsFragment"
         android:label="SetttingsFragment"
         tools:layout="@layout/settings_fragment" />
 </navigation>
