@@ -1,6 +1,6 @@
 package ru.solandme.washwait.data.db.entity
 
 data class Wind(
-        val deg: Double,
-        val speed: Double
+        val deg: Double = 0.0,
+        val speed: Double= 0.0
 )

@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 
 const val CURRENT_WEATHER_ID = 0
 
-@Entity(tableName = "current_weather")
-data class CurrentWeatherEntity(
+@Entity(tableName = "weather")
+data class WeatherEntity(
         var humidity: Int,
         var pressure: Double,
         var temp: Double,
@@ -17,9 +17,8 @@ data class CurrentWeatherEntity(
         var wind: Wind,
         var description: String,
         var icon: String,
-        var locationLat: Double,
-        var locationLon: Double,
-        var locationName: String,
+        @Embedded(prefix = "location_")
+        var location: Location,
         var lastUpdate: Long
 )
 {

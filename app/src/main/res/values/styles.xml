@@ -21,7 +21,7 @@
 
     <style name="smallWhiteText">
         <item name="android:textColor">@color/whiteTextColor</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>

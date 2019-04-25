@@ -3,7 +3,6 @@ package ru.solandme.washwait.data.net
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.solandme.washwait.data.db.entity.CurrentWeatherEntity
 import ru.solandme.washwait.internal.NoConnectivityException
 import ru.solandme.washwait.data.net.OWCResponse.OWCurrentWeatherResponse
 
@@ -11,8 +10,8 @@ class WeatherNetworkDataSourceImpl(
         private val openWeatherApiService: OpenWeatherApiService
 ) : WeatherNetworkDataSource {
 
-    private val _downloadedCurrentWeather = MutableLiveData<CurrentWeatherEntity>()
-    override val downloadedCurrentWeather: LiveData<CurrentWeatherEntity>
+    private val _downloadedCurrentWeather = MutableLiveData<OWCurrentWeatherResponse>()
+    override val downloadedCurrentWeather: LiveData<OWCurrentWeatherResponse>
         get() = _downloadedCurrentWeather
 
     override suspend fun fetchCurrentWeatherByCity(location: String, language: String) {
