@@ -9,7 +9,7 @@ import ru.solandme.washwait.data.db.entity.WeatherEntity
 import ru.solandme.washwait.data.net.WeatherNetworkDataSource
 
 
-class ForecastRepositoryImpl(
+class WeatherRepositoryImpl(
         private val weatherDAO: WeatherDAO,
         private val weatherNetworkDataSource: WeatherNetworkDataSource
 ) : WeatherRepository {
@@ -36,12 +36,14 @@ class ForecastRepositoryImpl(
     override fun getCurrentWeatherByCity(lang: String, location: String): LiveData<WeatherEntity> {
         return weatherDAO.getCurrentWeather()
     }
+
+    private fun isNeedUpdate(lastUpdatedTime: Long): Boolean {
+        //TODO реализовать сравнение времени последней записи в базу с текущем временем
+            return false
+    }
 }
 
-private fun isNeedUpdate(lastUpdatedTime: Long): Boolean {
-    //TODO реализовать сравнение времени последней записи в базу с текущем временем
-    return false
-}
+
 
 
 //init {

@@ -17,7 +17,7 @@ import ru.solandme.washwait.data.net.WeatherNetworkDataSourceImpl
 import ru.solandme.washwait.data.net.interceptors.ConnectivityInterceptor
 import ru.solandme.washwait.data.net.interceptors.ConnectivityInterceptorImpl
 import ru.solandme.washwait.data.repository.WeatherRepository
-import ru.solandme.washwait.data.repository.ForecastRepositoryImpl
+import ru.solandme.washwait.data.repository.WeatherRepositoryImpl
 import ru.solandme.washwait.ui.forecast.ForecastWeatherViewModelFactory
 import ru.solandme.washwait.ui.weather.CurrentWeatherViewModelFactory
 
@@ -30,7 +30,7 @@ class WashWaitApp : Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind<OpenWeatherApiService>() with singleton { OpenWeatherApiService(instance()) }
         bind<WeatherNetworkDataSource>() with  singleton { WeatherNetworkDataSourceImpl(instance()) }
-        bind<WeatherRepository>() with  singleton { ForecastRepositoryImpl(instance(), instance()) }
+        bind<WeatherRepository>() with  singleton { WeatherRepositoryImpl(instance(), instance()) }
         bind() from provider { CurrentWeatherViewModelFactory(instance()) }
         bind() from provider { ForecastWeatherViewModelFactory(instance()) }
 
