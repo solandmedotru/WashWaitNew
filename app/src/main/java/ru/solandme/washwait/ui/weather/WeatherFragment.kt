@@ -46,6 +46,9 @@ class WeatherFragment : Fragment(), KodeinAware {
             if (null != it) {
                 textTemp.text = it.temp.toString()+"\u2103"
                 textHumidity.text = it.humidity.toString()
+                textBarometer.text = it.pressure.toString()
+                textSpeedWind.text = it.wind.speed.toString()
+                textWindDir.text = it.wind.deg.toString()
             }
         })
 

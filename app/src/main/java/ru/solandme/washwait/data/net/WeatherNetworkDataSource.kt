@@ -9,22 +9,26 @@ interface WeatherNetworkDataSource {
     suspend fun fetchCurrentWeatherByCoordinate(
             lat: String,
             lon: String,
+            units: String,
             language: String
     ): WeatherEntity
 
     suspend fun fetchCurrentWeatherByCity(
             location: String,
+            units: String,
             language: String
     ): WeatherEntity
 
     suspend fun fetchForecastWeatherByCoordinate(
             lat: String,
             lon: String,
+            units: String,
             language: String
     ): List<WeatherEntity>
 
     suspend fun fetchForecastWeatherByCity(
             location: String,
+            units: String,
             language: String
     ): List<WeatherEntity>
 }

@@ -11,10 +11,10 @@ data class WeatherEntity(
         @PrimaryKey(autoGenerate = false)
         var id: Int = 0,
         var humidity: Int = 0,
-        var pressure: Double = 0.0,
-        var temp: Double = 0.0,
-        var tempMax: Double = 0.0,
-        var tempMin: Double = 0.0,
+        var pressure: Int = 0,
+        var temp: Int = 0,
+        var tempMax: Int = 0,
+        var tempMin: Int = 0,
         @Embedded(prefix = "wind_")
         var wind: Wind = Wind(),
         var description: String = "",

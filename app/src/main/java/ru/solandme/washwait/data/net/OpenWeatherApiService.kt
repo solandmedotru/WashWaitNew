@@ -24,29 +24,28 @@ interface OpenWeatherApiService {
             @Query("lat") lat: String,
             @Query("lon") lon: String,
             @Query("units") units: String = "metric",
-            @Query("lang") language: String = "en"): Deferred<Response<OWCurrentWeatherResponse>>
+            @Query("lang") language: String = "ru"): Deferred<Response<OWCurrentWeatherResponse>>
 
     @GET("weather")
     fun getCurrentWeatherByCityAsync(
             @Query("q") location: String = "London",
             @Query("units") units: String = "metric",
-            @Query("lang") language: String = "en"): Deferred<Response<OWCurrentWeatherResponse>>
+            @Query("lang") language: String = "ru"): Deferred<Response<OWCurrentWeatherResponse>>
 
     @GET("forecast/daily")
     fun getForecastWeatherByCoordinatesAsync(
             @Query("lat") lat: String,
             @Query("lon") lon: String,
             @Query("units") units: String = "metric",
-            @Query("lang") language: String = "en",
+            @Query("lang") language: String = "ru",
             @Query("cnt") cnt: String = "10"): Deferred<Response<OWForecastResponse>>
 
     @GET("forecast/daily")
     fun getForecastWeatherByCityAsync(
             @Query("q") location: String = "London",
             @Query("units") units: String = "metric",
-            @Query("lang") language: String = "en",
-            @Query("cnt") cnt: String = "10"
-    ): Deferred<Response<OWForecastResponse>>
+            @Query("lang") language: String = "ru",
+            @Query("cnt") cnt: String = "10"): Deferred<Response<OWForecastResponse>>
 
     companion object {
         fun getWeatherApi(

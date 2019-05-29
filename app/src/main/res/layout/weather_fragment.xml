@@ -55,15 +55,15 @@
             style="@style/smallWhiteText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:drawableTop="@drawable/ic_weather"
+            android:drawableTop="@drawable/ic_humidity"
             android:text="70%"
             android:textColor="@color/whiteTextColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textBarometer"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textTemp" />
 
@@ -73,12 +73,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:drawableTop="@drawable/ic_weather"
+            android:drawableTop="@drawable/ic_barometer"
             android:text="1008 mPa"
             android:textColor="@color/whiteTextColor"
             app:layout_constraintBaseline_toBaselineOf="@+id/textHumidity"
             app:layout_constraintEnd_toStartOf="@+id/textSpeedWind"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textHumidity" />
 
         <TextView
@@ -87,12 +86,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:drawableTop="@drawable/ic_weather"
+            android:drawableTop="@drawable/ic_wind"
             android:text="5 m/s"
             android:textColor="@color/whiteTextColor"
             app:layout_constraintBaseline_toBaselineOf="@+id/textBarometer"
             app:layout_constraintEnd_toStartOf="@+id/textWindDir"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textBarometer" />
 
         <TextView
@@ -102,12 +100,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:drawableTop="@drawable/ic_sunny_intervals"
+            android:drawableTop="@drawable/ic_wind_deg"
             android:text="wind East"
             android:textColor="@color/whiteTextColor"
             app:layout_constraintBaseline_toBaselineOf="@+id/textBarometer"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textSpeedWind" />
 
         <ImageView

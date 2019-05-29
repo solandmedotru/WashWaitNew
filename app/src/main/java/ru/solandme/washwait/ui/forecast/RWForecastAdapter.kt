@@ -31,9 +31,12 @@ class RWForecastAdapter: RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>()
         fun bindViewItems(weather: WeatherEntity){
             val textTempMax = itemView.findViewById(R.id.textTempMax) as TextView
             val textTempMin = itemView.findViewById(R.id.textTempMin) as TextView
+            val textDescribe = itemView.findViewById(R.id.textDescribe) as TextView
+
 
             textTempMin.text = weather.tempMin.toString()+"\u2103"
             textTempMax.text = weather.tempMax.toString()+"\u2103"
+            textDescribe.text = weather.description
         }
     }
 }

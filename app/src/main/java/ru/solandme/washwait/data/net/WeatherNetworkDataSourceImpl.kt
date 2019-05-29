@@ -7,7 +7,6 @@ import ru.solandme.washwait.data.db.entity.Wind
 import ru.solandme.washwait.internal.NoConnectivityException
 import ru.solandme.washwait.data.net.OWCResponse.OWCurrentWeatherResponse
 import ru.solandme.washwait.data.net.OWFResponse.OWForecastResponse
-import ru.solandme.washwait.data.net.OWFResponse.X
 
 class WeatherNetworkDataSourceImpl(
         private val openWeatherApiService: OpenWeatherApiService
@@ -15,10 +14,10 @@ class WeatherNetworkDataSourceImpl(
 
     private val emptyWeatherEntity = WeatherEntity()
 
-    override suspend fun fetchCurrentWeatherByCity(location: String, language: String): WeatherEntity {
+    override suspend fun fetchCurrentWeatherByCity(location: String, units: String, language: String): WeatherEntity {
         try {
             val fetchedCurrentWeather = openWeatherApiService
-                    .getCurrentWeatherByCityAsync(location, language)
+                    .getCurrentWeatherByCityAsync(location, units, language)
                     .await()
             return if (fetchedCurrentWeather.isSuccessful) {
                 weatherMapping(0, fetchedCurrentWeather.body()!!)
@@ -29,10 +28,10 @@ class WeatherNetworkDataSourceImpl(
         return emptyWeatherEntity
     }
 
-    override suspend fun fetchCurrentWeatherByCoordinate(lat: String, lon: String, language: String): WeatherEntity {
+    override suspend fun fetchCurrentWeatherByCoordinate(lat: String, lon: String, units: String, language: String): WeatherEntity {
         try {
             val fetchedCurrentWeather = openWeatherApiService
-                    .getCurrentWeatherByCityAsync(lat, lon, language)
+                    .getCurrentWeatherByCoordinatesAsync(lat, lon, units, language)
                     .await()
             return if (fetchedCurrentWeather.isSuccessful) {
                 weatherMapping(0, fetchedCurrentWeather.body()!!)
@@ -43,11 +42,11 @@ class WeatherNetworkDataSourceImpl(
         return emptyWeatherEntity
     }
 
-    override suspend fun fetchForecastWeatherByCoordinate(lat: String, lon: String, language: String): List<WeatherEntity> {
+    override suspend fun fetchForecastWeatherByCoordinate(lat: String, lon: String, units: String, language: String): List<WeatherEntity> {
         var forecast: MutableList<WeatherEntity> = mutableListOf()
         try {
             val fetchedForecast = openWeatherApiService
-                    .getForecastWeatherByCoordinatesAsync(lat, lon, language)
+                    .getForecastWeatherByCoordinatesAsync(lat, lon, units, language)
                     .await()
             if (fetchedForecast.isSuccessful) {
                 forecast = forecastMapping(fetchedForecast.body()!!)
@@ -59,11 +58,11 @@ class WeatherNetworkDataSourceImpl(
         return forecast
     }
 
-    override suspend fun fetchForecastWeatherByCity(location: String, language: String): List<WeatherEntity> {
+    override suspend fun fetchForecastWeatherByCity(location: String, units: String, language: String): List<WeatherEntity> {
         var forecast: MutableList<WeatherEntity> = mutableListOf()
         try {
             val fetchedForecast = openWeatherApiService
-                    .getForecastWeatherByCityAsync(location, language)
+                    .getForecastWeatherByCityAsync(location, units, language)
                     .await()
             if (fetchedForecast.isSuccessful) {
                 forecast = forecastMapping(fetchedForecast.body()!!)
@@ -81,10 +80,10 @@ class WeatherNetworkDataSourceImpl(
             forecast.add(WeatherEntity(
                     id,
                     response.list[id].humidity,
-                    response.list[id].pressure,
-                    response.list[id].temp.day,
-                    response.list[id].temp.max,
-                    response.list[id].temp.min,
+                    response.list[id].pressure.toInt(),
+                    response.list[id].temp.day.toInt(),
+                    response.list[id].temp.max.toInt(),
+                    response.list[id].temp.min.toInt(),
                     Wind(response.list[id].deg, response.list[id].speed),
                     response.list[id].weather[0].description,
                     response.list[id].weather[0].icon,
@@ -100,10 +99,10 @@ class WeatherNetworkDataSourceImpl(
         return WeatherEntity(
                 id,
                 fetchedCurrentWeather.main.humidity,
-                fetchedCurrentWeather.main.pressure,
-                fetchedCurrentWeather.main.temp,
-                fetchedCurrentWeather.main.tempMax,
-                fetchedCurrentWeather.main.tempMin,
+                fetchedCurrentWeather.main.pressure.toInt(),
+                fetchedCurrentWeather.main.temp.toInt(),
+                fetchedCurrentWeather.main.tempMax.toInt(),
+                fetchedCurrentWeather.main.tempMin.toInt(),
                 Wind(fetchedCurrentWeather.wind.deg, fetchedCurrentWeather.wind.speed),
 
                 fetchedCurrentWeather.weather[id].description,

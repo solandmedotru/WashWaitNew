@@ -21,7 +21,7 @@ class ForecastRepositoryImpl(
     @UiThread
     override fun getForecastWeatherByCity(lang: String, location: String): LiveData<List<WeatherEntity>> {
         GlobalScope.launch(Dispatchers.IO) {
-            val fetchForecastWeatherByCity = weatherNetworkDataSource.fetchForecastWeatherByCity("London", "ru")
+            val fetchForecastWeatherByCity = weatherNetworkDataSource.fetchForecastWeatherByCity("London", "metric","ru")
             weatherDAO.insertAll(fetchForecastWeatherByCity)
         }
         return weatherDAO.getWeathers()
@@ -29,7 +29,7 @@ class ForecastRepositoryImpl(
 
     override fun getCurrentWeatherByCity(lang: String, location: String): LiveData<WeatherEntity> {
         GlobalScope.launch(Dispatchers.IO) {
-            val fetchCurrentWeatherByCity = weatherNetworkDataSource.fetchCurrentWeatherByCity("London", "ru")
+            val fetchCurrentWeatherByCity = weatherNetworkDataSource.fetchCurrentWeatherByCity("London", "metric","ru")
             weatherDAO.insert(fetchCurrentWeatherByCity)
         }
         return weatherDAO.getCurrentWeather()
