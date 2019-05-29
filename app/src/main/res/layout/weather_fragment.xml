@@ -36,7 +36,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:contentDescription="weather icon"
-            android:src="@drawable/ic_sunny_intervals"
+            android:src="@drawable/ic_weather_icons_05"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -158,19 +158,20 @@
             android:text="Сегодня отличный день что-бы помыть машину! А это вторая строка чтобы видеть "
             android:textAlignment="center"
             android:textColor="@color/whiteTextColor"
-            app:layout_constraintBottom_toTopOf="@+id/include"
+            app:layout_constraintBottom_toTopOf="@+id/rwForecasts"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <include
-            android:id="@+id/include"
-            layout="@layout/forecast_fragment"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rwForecasts"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/forecast_message" />
+            app:layout_constraintTop_toBottomOf="@id/forecast_message"
+            android:scrollbars="horizontal"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

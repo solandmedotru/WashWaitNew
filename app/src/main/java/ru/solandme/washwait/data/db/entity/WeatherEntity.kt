@@ -8,6 +8,8 @@ const val CURRENT_WEATHER_ID = 0
 
 @Entity(tableName = "weather")
 data class WeatherEntity(
+        @PrimaryKey(autoGenerate = false)
+        var id: Int,
         var humidity: Int,
         var pressure: Double,
         var temp: Double,
@@ -21,7 +23,3 @@ data class WeatherEntity(
         var location: Location,
         var lastUpdate: Long
 )
-{
-        @PrimaryKey(autoGenerate = false)
-        var id: Int = CURRENT_WEATHER_ID
-}

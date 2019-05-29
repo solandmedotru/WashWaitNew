@@ -9,7 +9,10 @@
         android:id="@+id/destination_weather"
         android:name="ru.solandme.washwait.ui.weather.WeatherFragment"
         android:label="WeatherFragment"
-        tools:layout="@layout/weather_fragment"/>
+        tools:layout="@layout/weather_fragment">
+
+    </fragment>
+
     <fragment
         android:id="@+id/destination_map"
         android:name="ru.solandme.washwait.ui.map.MapFragment"

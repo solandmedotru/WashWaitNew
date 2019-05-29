@@ -29,10 +29,10 @@ class WashWaitApp : Application(), KodeinAware {
         bind<WeatherDAO>() with singleton { instance<ForecastDataBase>().weatherDao() }
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind<OpenWeatherApiService>() with singleton { OpenWeatherApiService(instance()) }
-        bind<WeatherNetworkDataSource>() with  singleton { WeatherNetworkDataSourceImpl(instance()) }
-        bind<WeatherRepository>() with  singleton { ForecastRepositoryImpl(instance(), instance()) }
-        bind() from provider { CurrentWeatherViewModelFactory(instance()) }
+        bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
+        bind<WeatherRepository>() with singleton { ForecastRepositoryImpl(instance(), instance()) }
         bind() from provider { ForecastWeatherViewModelFactory(instance()) }
+        bind() from provider { CurrentWeatherViewModelFactory(instance()) }
 
     }
 
