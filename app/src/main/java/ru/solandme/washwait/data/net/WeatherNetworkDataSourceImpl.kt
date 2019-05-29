@@ -1,9 +1,6 @@
 package ru.solandme.washwait.data.net
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import retrofit2.Response
 import ru.solandme.washwait.data.db.entity.Location
 import ru.solandme.washwait.data.db.entity.WeatherEntity
 import ru.solandme.washwait.data.db.entity.Wind
@@ -14,17 +11,7 @@ class WeatherNetworkDataSourceImpl(
         private val openWeatherApiService: OpenWeatherApiService
 ) : WeatherNetworkDataSource {
 
-    private val errorWeatherEntity = WeatherEntity(0,
-            0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            Wind(),
-            "ERROR",
-            "",
-            Location(),
-            0L)
+    private val emptyWeatherEntity = WeatherEntity()
 
     override suspend fun fetchCurrentWeatherByCity(location: String, language: String): WeatherEntity {
         try {
@@ -33,13 +20,13 @@ class WeatherNetworkDataSourceImpl(
                     .await()
             return if (fetchedCurrentWeather.isSuccessful) {
                 weatherMapping(fetchedCurrentWeather.body()!!)
-            } else errorWeatherEntity
+            } else emptyWeatherEntity
 
 
         } catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection.", e)
         }
-        return errorWeatherEntity
+        return emptyWeatherEntity
     }
 
     override suspend fun fetchCurrentWeatherByCoordinate(lat: String, lon: String, language: String): WeatherEntity {
@@ -49,13 +36,13 @@ class WeatherNetworkDataSourceImpl(
                     .await()
             return if (fetchedCurrentWeather.isSuccessful) {
                 weatherMapping(fetchedCurrentWeather.body()!!)
-            } else errorWeatherEntity
+            } else emptyWeatherEntity
 
 
         } catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection.", e)
         }
-        return errorWeatherEntity
+        return emptyWeatherEntity
     }
 
     private fun weatherMapping(fetchedCurrentWeather: OWCurrentWeatherResponse): WeatherEntity {
