@@ -16,4 +16,15 @@ interface WeatherNetworkDataSource {
             location: String,
             language: String
     ): WeatherEntity
+
+    suspend fun fetchForecastWeatherByCoordinate(
+            lat: String,
+            lon: String,
+            language: String
+    ): List<WeatherEntity>
+
+    suspend fun fetchForecastWeatherByCity(
+            location: String,
+            language: String
+    ): List<WeatherEntity>
 }

@@ -20,7 +20,10 @@ class ForecastRepositoryImpl(
 
     @UiThread
     override fun getForecastWeatherByCity(lang: String, location: String): LiveData<List<WeatherEntity>> {
-        var forecastWeather: MutableLiveData<List<WeatherEntity>> = MutableLiveData()
+        GlobalScope.launch(Dispatchers.IO) {
+            val fetchForecastWeatherByCity = weatherNetworkDataSource.fetchForecastWeatherByCity("London", "ru")
+            weatherDAO.insertAll(fetchForecastWeatherByCity)
+        }
         return weatherDAO.getWeathers()
     }
 

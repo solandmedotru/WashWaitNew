@@ -6,6 +6,8 @@ import ru.solandme.washwait.data.db.entity.WeatherEntity
 import ru.solandme.washwait.data.db.entity.Wind
 import ru.solandme.washwait.internal.NoConnectivityException
 import ru.solandme.washwait.data.net.OWCResponse.OWCurrentWeatherResponse
+import ru.solandme.washwait.data.net.OWFResponse.OWForecastResponse
+import ru.solandme.washwait.data.net.OWFResponse.X
 
 class WeatherNetworkDataSourceImpl(
         private val openWeatherApiService: OpenWeatherApiService
@@ -19,10 +21,8 @@ class WeatherNetworkDataSourceImpl(
                     .getCurrentWeatherByCityAsync(location, language)
                     .await()
             return if (fetchedCurrentWeather.isSuccessful) {
-                weatherMapping(fetchedCurrentWeather.body()!!)
+                weatherMapping(0, fetchedCurrentWeather.body()!!)
             } else emptyWeatherEntity
-
-
         } catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection.", e)
         }
@@ -35,19 +35,70 @@ class WeatherNetworkDataSourceImpl(
                     .getCurrentWeatherByCityAsync(lat, lon, language)
                     .await()
             return if (fetchedCurrentWeather.isSuccessful) {
-                weatherMapping(fetchedCurrentWeather.body()!!)
+                weatherMapping(0, fetchedCurrentWeather.body()!!)
             } else emptyWeatherEntity
-
-
         } catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection.", e)
         }
         return emptyWeatherEntity
     }
 
-    private fun weatherMapping(fetchedCurrentWeather: OWCurrentWeatherResponse): WeatherEntity {
+    override suspend fun fetchForecastWeatherByCoordinate(lat: String, lon: String, language: String): List<WeatherEntity> {
+        var forecast: MutableList<WeatherEntity> = mutableListOf()
+        try {
+            val fetchedForecast = openWeatherApiService
+                    .getForecastWeatherByCoordinatesAsync(lat, lon, language)
+                    .await()
+            if (fetchedForecast.isSuccessful) {
+                forecast = forecastMapping(fetchedForecast.body()!!)
+                return forecast
+            } else return forecast
+        } catch (e: NoConnectivityException) {
+            Log.e("Connectivity", "No internet connection.", e)
+        }
+        return forecast
+    }
+
+    override suspend fun fetchForecastWeatherByCity(location: String, language: String): List<WeatherEntity> {
+        var forecast: MutableList<WeatherEntity> = mutableListOf()
+        try {
+            val fetchedForecast = openWeatherApiService
+                    .getForecastWeatherByCityAsync(location, language)
+                    .await()
+            if (fetchedForecast.isSuccessful) {
+                forecast = forecastMapping(fetchedForecast.body()!!)
+                return forecast
+            } else return forecast
+        } catch (e: NoConnectivityException) {
+            Log.e("Connectivity", "No internet connection.", e)
+        }
+        return forecast
+    }
+
+    private fun forecastMapping(response: OWForecastResponse): MutableList<WeatherEntity> {
+        val forecast: MutableList<WeatherEntity> = mutableListOf()
+        response.list.indices.forEach { id ->
+            forecast.add(WeatherEntity(
+                    id,
+                    response.list[id].humidity,
+                    response.list[id].pressure,
+                    response.list[id].temp.day,
+                    response.list[id].temp.max,
+                    response.list[id].temp.min,
+                    Wind(response.list[id].deg, response.list[id].speed),
+                    response.list[id].weather[0].description,
+                    response.list[id].weather[0].icon,
+                    Location(response.city.lat, response.city.lon, response.city.name),
+                    response.list[id].dt.toLong()
+            ))
+        }
+        return forecast
+    }
+
+
+    private fun weatherMapping(id: Int, fetchedCurrentWeather: OWCurrentWeatherResponse): WeatherEntity {
         return WeatherEntity(
-                0,
+                id,
                 fetchedCurrentWeather.main.humidity,
                 fetchedCurrentWeather.main.pressure,
                 fetchedCurrentWeather.main.temp,
@@ -55,8 +106,8 @@ class WeatherNetworkDataSourceImpl(
                 fetchedCurrentWeather.main.tempMin,
                 Wind(fetchedCurrentWeather.wind.deg, fetchedCurrentWeather.wind.speed),
 
-                fetchedCurrentWeather.weather[0].description,
-                fetchedCurrentWeather.weather[0].icon,
+                fetchedCurrentWeather.weather[id].description,
+                fetchedCurrentWeather.weather[id].icon,
                 Location(fetchedCurrentWeather.coord.lat,
                         fetchedCurrentWeather.coord.lon,
                         fetchedCurrentWeather.name

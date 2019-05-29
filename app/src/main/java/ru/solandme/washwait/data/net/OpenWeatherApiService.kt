@@ -10,6 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import ru.solandme.washwait.data.net.OWCResponse.OWCurrentWeatherResponse
+import ru.solandme.washwait.data.net.OWFResponse.OWForecastResponse
 import ru.solandme.washwait.data.net.interceptors.ConnectivityInterceptor
 
 const val API_KEY = "8c809aface8967d960a0bec0db127446"
@@ -30,6 +31,22 @@ interface OpenWeatherApiService {
             @Query("q") location: String = "London",
             @Query("units") units: String = "metric",
             @Query("lang") language: String = "en"): Deferred<Response<OWCurrentWeatherResponse>>
+
+    @GET("forecast/daily")
+    fun getForecastWeatherByCoordinatesAsync(
+            @Query("lat") lat: String,
+            @Query("lon") lon: String,
+            @Query("units") units: String = "metric",
+            @Query("lang") language: String = "en",
+            @Query("cnt") cnt: String = "10"): Deferred<Response<OWForecastResponse>>
+
+    @GET("forecast/daily")
+    fun getForecastWeatherByCityAsync(
+            @Query("q") location: String = "London",
+            @Query("units") units: String = "metric",
+            @Query("lang") language: String = "en",
+            @Query("cnt") cnt: String = "10"
+    ): Deferred<Response<OWForecastResponse>>
 
     companion object {
         fun getWeatherApi(
@@ -63,7 +80,7 @@ interface OpenWeatherApiService {
     }
 }
 
-sealed class Result<out T: Any> {
+sealed class Result<out T : Any> {
     data class Success<out T : Any>(val data: T) : Result<T>()
     data class Error(val exception: Exception) : Result<Nothing>()
 }
