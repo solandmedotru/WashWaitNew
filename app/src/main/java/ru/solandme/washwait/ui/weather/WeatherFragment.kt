@@ -1,9 +1,11 @@
 package ru.solandme.washwait.ui.weather
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
@@ -44,11 +46,12 @@ class WeatherFragment : Fragment(), KodeinAware {
         val currentWeatherViewModel = ViewModelProviders.of(this, currentWeatherViewModelFactory).get(CurrentWeatherViewModel::class.java)
         currentWeatherViewModel.getWeather().observe(this, Observer<WeatherEntity> {
             if (null != it) {
-                textTemp.text = it.temp.toString()+"\u2103"
+                textTemp.text = it.temp.toString() + "\u2103"
                 textHumidity.text = it.humidity.toString()
                 textBarometer.text = it.pressure.toString()
                 textSpeedWind.text = it.wind.speed.toString()
-                textWindDir.text = it.wind.deg.toString()
+                textWindDir.text = getString(getWindRes(it.wind.deg))
+                Toast.makeText(context, it.wind.deg.toString(), Toast.LENGTH_LONG).show()
             }
         })
 
@@ -58,5 +61,21 @@ class WeatherFragment : Fragment(), KodeinAware {
                 rwForecastAdapter.addItems(it)
             }
         })
+    }
+
+    private fun getWindRes(direction: Double): Int {
+        val dir = Math.round(direction % 360 / 45).toInt()
+        when (dir % 16) {
+            0 -> return R.string.wi_wind_north
+            1 -> return R.string.wi_wind_north_east
+            2 -> return R.string.wi_wind_east
+            3 -> return R.string.wi_wind_south_east
+            4 -> return R.string.wi_wind_south
+            5 -> return R.string.wi_wind_south_west
+            6 -> return R.string.wi_wind_west
+            7 -> return R.string.wi_wind_north_west
+            8 -> return R.string.wi_wind_north
+        }
+        return R.string.wi_wind_north
     }
 }
