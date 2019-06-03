@@ -10,6 +10,9 @@ interface WeatherDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(weatherEntity: WeatherEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(weatherEntity: List<WeatherEntity>)
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(weatherEntity: WeatherEntity)
 

@@ -3,4 +3,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="celsius">%1$d ℃</string>
+    <string name="fahrenheit">%1$d \u2109</string>
+    <string name="wi_wind_north">North</string>
+    <string name="wi_wind_north_east">North east</string>
+    <string name="wi_wind_east">East</string>
+    <string name="wi_wind_south_east">South east</string>
+    <string name="wi_wind_south">South</string>
+    <string name="wi_wind_south_west">South west</string>
+    <string name="wi_wind_west">West</string>
+    <string name="wi_wind_north_west">North west</string>
 </resources>

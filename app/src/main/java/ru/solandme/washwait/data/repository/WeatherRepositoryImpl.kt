@@ -1,15 +1,18 @@
 package ru.solandme.washwait.data.repository
 
-import android.util.Log
 import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import ru.solandme.washwait.data.db.WeatherDAO
 import ru.solandme.washwait.data.db.entity.WeatherEntity
 import ru.solandme.washwait.data.net.WeatherNetworkDataSource
 
 
-class WeatherRepositoryImpl(
+class ForecastRepositoryImpl(
         private val weatherDAO: WeatherDAO,
         private val weatherNetworkDataSource: WeatherNetworkDataSource
 ) : WeatherRepository {
@@ -17,44 +20,23 @@ class WeatherRepositoryImpl(
 
     @UiThread
     override fun getForecastWeatherByCity(lang: String, location: String): LiveData<List<WeatherEntity>> {
-        var forecastWeather: MutableLiveData<List<WeatherEntity>> = MutableLiveData()
-
-//        GlobalScope.launch(Dispatchers.Main) {
-//            val forecast: LiveData<List<WeatherEntity>> = async(Dispatchers.IO) {
-//                Log.e("MY1", "Add to DB")
-//                val w = weatherDAO.getWeathers()
-//                Log.e("MY2", w.toString())
-//                return@async w
-//            }.await()
-//            forecastWeather = forecast as MutableLiveData<List<WeatherEntity>>
-//        }
-        val w = weatherDAO.getWeathers()
-        Log.e("MY2", w.toString())
-        return w
+        GlobalScope.launch(Dispatchers.IO) {
+            val fetchForecastWeatherByCity = weatherNetworkDataSource.fetchForecastWeatherByCity("London", "metric","ru")
+            weatherDAO.insertAll(fetchForecastWeatherByCity)
+        }
+        return weatherDAO.getWeathers()
     }
 
     override fun getCurrentWeatherByCity(lang: String, location: String): LiveData<WeatherEntity> {
+        GlobalScope.launch(Dispatchers.IO) {
+            val fetchCurrentWeatherByCity = weatherNetworkDataSource.fetchCurrentWeatherByCity("London", "metric","ru")
+            weatherDAO.insert(fetchCurrentWeatherByCity)
+        }
         return weatherDAO.getCurrentWeather()
-    }
-
-    private fun isNeedUpdate(lastUpdatedTime: Long): Boolean {
-        //TODO реализовать сравнение времени последней записи в базу с текущем временем
-            return false
     }
 }
 
-
-
-
-//init {
-//        weatherNetworkDataSource.downloadedCurrentWeather.observeForever{
-//            newCurrentWeather->persistFetchedCurrentWeather(newCurrentWeather)
-//        }
-//}
-
-//    private fun persistFetchedCurrentWeather(fetchedWeather: CurrentWeatherEntity){
-//        GlobalScope.launch(Dispatchers.IO) {
-//            currentWeatherDAO.upsert(fetchedWeather.)
-//        }
-//    }
-//}
+private fun isNeedUpdate(lastUpdatedTime: Long): Boolean {
+    //TODO реализовать сравнение времени последней записи в базу с текущем временем
+    return false
+}
