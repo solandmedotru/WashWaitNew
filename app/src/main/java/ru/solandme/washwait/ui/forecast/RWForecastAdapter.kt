@@ -7,8 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.solandme.washwait.R
 import ru.solandme.washwait.data.db.entity.WeatherEntity
+import java.util.*
 
-class RWForecastAdapter: RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>() {
+
+class RWForecastAdapter : RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>() {
     var weatherForecasts: List<WeatherEntity> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherHolder {
@@ -22,21 +24,29 @@ class RWForecastAdapter: RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>()
 
     override fun getItemCount() = weatherForecasts.size
 
-    fun addItems(weatherForecasts: List<WeatherEntity>){
+    fun addItems(weatherForecasts: List<WeatherEntity>) {
         this.weatherForecasts = weatherForecasts
         notifyDataSetChanged()
     }
 
     inner class WeatherHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindViewItems(weather: WeatherEntity){
-            val textTempMax = itemView.findViewById(R.id.textTempMax) as TextView
-            val textTempMin = itemView.findViewById(R.id.textTempMin) as TextView
-            val textDescribe = itemView.findViewById(R.id.textDescribe) as TextView
+        fun bindViewItems(weather: WeatherEntity) {
+            val textTempMax = itemView.findViewById(R.id.rw_text_temp_max) as TextView
+            val textTempMin = itemView.findViewById(R.id.rw_text_temp_min) as TextView
+            val textDescribe = itemView.findViewById(R.id.rw_text_describe) as TextView
+            val textDay = itemView.findViewById(R.id.rw_text_day) as TextView
 
 
-            textTempMin.text = weather.tempMin.toString()+"\u2103"
-            textTempMax.text = weather.tempMax.toString()+"\u2103"
+            textTempMin.text = weather.tempMin.toString() + "\u2103"
+            textTempMax.text = weather.tempMax.toString() + "\u2103"
             textDescribe.text = weather.description
+            textDay.text = getFormattedDate(weather.lastUpdate)
         }
+    }
+
+    fun getFormattedDate(timestamp: Long): String {
+        val instance = Calendar.getInstance()
+        instance.timeInMillis = timestamp*1000L
+        return String.format("%ta, %te %tb", instance, instance, instance)
     }
 }
