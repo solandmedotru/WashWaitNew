@@ -18,7 +18,7 @@ data class WeatherEntity(
         @Embedded(prefix = "wind_")
         var wind: Wind = Wind(),
         var description: String = "",
-        var icon: String = "",
+        var icon: Int = 0,
         @Embedded(prefix = "location_")
         var location: Location = Location(),
         var lastUpdate: Long = 0L

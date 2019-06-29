@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -19,7 +18,7 @@ import ru.solandme.washwait.data.db.entity.WeatherEntity
 import ru.solandme.washwait.ui.forecast.ForecastWeatherViewModel
 import ru.solandme.washwait.ui.forecast.ForecastWeatherViewModelFactory
 import ru.solandme.washwait.ui.forecast.RWForecastAdapter
-
+import kotlin.math.roundToInt
 
 class WeatherFragment : Fragment(), KodeinAware {
     override val kodein by kodein()
@@ -41,12 +40,7 @@ class WeatherFragment : Fragment(), KodeinAware {
         val currentWeatherViewModel = ViewModelProviders.of(this, currentWeatherViewModelFactory).get(CurrentWeatherViewModel::class.java)
         currentWeatherViewModel.getWeather().observe(this, Observer<WeatherEntity> {
             if (null != it) {
-                textTemp.text = it.temp.toString() + "\u2103"
-                textHumidity.text = it.humidity.toString()
-                textBarometer.text = it.pressure.toString()
-                textSpeedWind.text = it.wind.speed.toString()
-                textWindDir.text = getString(getWindRes(it.wind.deg))
-                Toast.makeText(context, it.wind.deg.toString(), Toast.LENGTH_LONG).show()
+                fillWeatherCard(it)
             }
         })
 
@@ -66,8 +60,19 @@ class WeatherFragment : Fragment(), KodeinAware {
         })
     }
 
+    private fun fillWeatherCard(entity: WeatherEntity) {
+        textTemp.text = entity.temp.toString() + "\u2103"
+        textHumidity.text = entity.humidity.toString()
+        textBarometer.text = entity.pressure.toString()
+        textSpeedWind.text = entity.wind.speed.toString()
+        textWindDir.text = getString(getWindRes(entity.wind.deg))
+        weatherIcon.setImageResource(entity.icon)
+
+        tw_city_name.text = entity.location.locationName
+    }
+
     private fun getWindRes(direction: Double): Int {
-        val dir = Math.round(direction % 360 / 45).toInt()
+        val dir = (direction % 360 / 45).roundToInt()
         when (dir % 16) {
             0 -> return R.string.wi_wind_north
             1 -> return R.string.wi_wind_north_east

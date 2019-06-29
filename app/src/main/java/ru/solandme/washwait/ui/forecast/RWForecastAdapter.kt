@@ -3,6 +3,7 @@ package ru.solandme.washwait.ui.forecast
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.solandme.washwait.R
@@ -19,7 +20,7 @@ class RWForecastAdapter : RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>(
     }
 
     override fun onBindViewHolder(holder: WeatherHolder, position: Int) {
-        holder.bindViewItems(weatherForecasts[position])
+        holder.bind(weatherForecasts[position])
     }
 
     override fun getItemCount() = weatherForecasts.size
@@ -30,17 +31,18 @@ class RWForecastAdapter : RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>(
     }
 
     inner class WeatherHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindViewItems(weather: WeatherEntity) {
+        fun bind(weather: WeatherEntity) {
             val textTempMax = itemView.findViewById(R.id.rw_text_temp_max) as TextView
             val textTempMin = itemView.findViewById(R.id.rw_text_temp_min) as TextView
             val textDescribe = itemView.findViewById(R.id.rw_text_describe) as TextView
             val textDay = itemView.findViewById(R.id.rw_text_day) as TextView
-
+            val weatherIcon = itemView.findViewById(R.id.rw_weather_icon) as ImageView
 
             textTempMin.text = weather.tempMin.toString() + "\u2103"
             textTempMax.text = weather.tempMax.toString() + "\u2103"
             textDescribe.text = weather.description
             textDay.text = getFormattedDate(weather.lastUpdate)
+            weatherIcon.setImageResource(weather.icon)
         }
     }
 

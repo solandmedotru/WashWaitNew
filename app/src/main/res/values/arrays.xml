@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="forecastLimit" translatable="false">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
+    <string-array name="units" translatable="false">
+        <item>metric</item>
+        <item>imperial</item>
+        <item>standard</item>
+    </string-array>
+
+    <string-array name="unitsName" translatable="false">
+        <item>C</item>
+        <item>F</item>
+        <item>K</item>
+    </string-array>
+
+    <string-array name="forecastProviders" translatable="false">
+        <item>OpenWeatherMap</item>
+        <item>DarkSky</item>
+    </string-array>
+
+</resources>

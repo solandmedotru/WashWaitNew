@@ -1,4 +1,4 @@
-package ru.solandme.washwait.data.net.OWFResponse
+package ru.solandme.washwait.data.net.owm.owfResponse
 
 
 import com.google.gson.annotations.SerializedName

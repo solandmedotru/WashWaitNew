@@ -1,34 +1,34 @@
 package ru.solandme.washwait.data.net
 
-import androidx.lifecycle.LiveData
 import ru.solandme.washwait.data.db.entity.WeatherEntity
-import ru.solandme.washwait.data.net.OWCResponse.OWCurrentWeatherResponse
 
 interface WeatherNetworkDataSource {
 
-    suspend fun fetchCurrentWeatherByCoordinate(
+    suspend fun getForecastWeather(
             lat: String,
             lon: String,
             units: String,
             language: String
-    ): WeatherEntity
+    ): List<WeatherEntity> {
+        return emptyList()
+    }
 
-    suspend fun fetchCurrentWeatherByCity(
+    suspend fun getForecastWeather(
             location: String,
             units: String,
             language: String
-    ): WeatherEntity
+    ): List<WeatherEntity>{
+        return emptyList()
+    }
 
-    suspend fun fetchForecastWeatherByCoordinate(
+    suspend fun getForecastWeather(
             lat: String,
             lon: String,
-            units: String,
-            language: String
-    ): List<WeatherEntity>
-
-    suspend fun fetchForecastWeatherByCity(
-            location: String,
-            units: String,
-            language: String
-    ): List<WeatherEntity>
+            hours: String,
+            language: String,
+            limit: String,
+            extra: String
+    ): List<WeatherEntity>{
+        return emptyList()
+    }
 }

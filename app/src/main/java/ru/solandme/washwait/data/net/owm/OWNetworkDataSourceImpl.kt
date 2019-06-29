@@ -1,73 +1,46 @@
-package ru.solandme.washwait.data.net
+package ru.solandme.washwait.data.net.owm
 
 import android.util.Log
+import ru.solandme.washwait.R
 import ru.solandme.washwait.data.db.entity.Location
 import ru.solandme.washwait.data.db.entity.WeatherEntity
 import ru.solandme.washwait.data.db.entity.Wind
 import ru.solandme.washwait.internal.NoConnectivityException
-import ru.solandme.washwait.data.net.OWCResponse.OWCurrentWeatherResponse
-import ru.solandme.washwait.data.net.OWFResponse.OWForecastResponse
+import ru.solandme.washwait.data.net.owm.owcResponse.OWCurrentWeatherResponse
+import ru.solandme.washwait.data.net.owm.owfResponse.OWForecastResponse
+import ru.solandme.washwait.data.net.WeatherNetworkDataSource
 
-class WeatherNetworkDataSourceImpl(
+class OWNetworkDataSourceImpl(
         private val openWeatherApiService: OpenWeatherApiService
 ) : WeatherNetworkDataSource {
 
-    private val emptyWeatherEntity = WeatherEntity()
-
-    override suspend fun fetchCurrentWeatherByCity(location: String, units: String, language: String): WeatherEntity {
-        try {
-            val fetchedCurrentWeather = openWeatherApiService
-                    .getCurrentWeatherByCityAsync(location, units, language)
-                    .await()
-            return if (fetchedCurrentWeather.isSuccessful) {
-                weatherMapping(0, fetchedCurrentWeather.body()!!)
-            } else emptyWeatherEntity
-        } catch (e: NoConnectivityException) {
-            Log.e("Connectivity", "No internet connection.", e)
-        }
-        return emptyWeatherEntity
-    }
-
-    override suspend fun fetchCurrentWeatherByCoordinate(lat: String, lon: String, units: String, language: String): WeatherEntity {
-        try {
-            val fetchedCurrentWeather = openWeatherApiService
-                    .getCurrentWeatherByCoordinatesAsync(lat, lon, units, language)
-                    .await()
-            return if (fetchedCurrentWeather.isSuccessful) {
-                weatherMapping(0, fetchedCurrentWeather.body()!!)
-            } else emptyWeatherEntity
-        } catch (e: NoConnectivityException) {
-            Log.e("Connectivity", "No internet connection.", e)
-        }
-        return emptyWeatherEntity
-    }
-
-    override suspend fun fetchForecastWeatherByCoordinate(lat: String, lon: String, units: String, language: String): List<WeatherEntity> {
+    override suspend fun getForecastWeather(lat: String, lon: String, units: String, language: String): List<WeatherEntity> {
         var forecast: MutableList<WeatherEntity> = mutableListOf()
         try {
             val fetchedForecast = openWeatherApiService
-                    .getForecastWeatherByCoordinatesAsync(lat, lon, units, language)
+                    .getForecastWeatherAsync(lat, lon, units, language)
                     .await()
-            if (fetchedForecast.isSuccessful) {
+            return if (fetchedForecast.isSuccessful) {
                 forecast = forecastMapping(fetchedForecast.body()!!)
-                return forecast
-            } else return forecast
+                forecast
+            } else forecast
         } catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection.", e)
         }
         return forecast
     }
 
-    override suspend fun fetchForecastWeatherByCity(location: String, units: String, language: String): List<WeatherEntity> {
+    override suspend fun getForecastWeather(location: String, units: String, language: String): List<WeatherEntity> {
         var forecast: MutableList<WeatherEntity> = mutableListOf()
         try {
             val fetchedForecast = openWeatherApiService
-                    .getForecastWeatherByCityAsync(location, units, language)
+                    .getForecastWeatherAsync(location, units, language)
                     .await()
-            if (fetchedForecast.isSuccessful) {
+
+            return if (fetchedForecast.isSuccessful) {
                 forecast = forecastMapping(fetchedForecast.body()!!)
-                return forecast
-            } else return forecast
+                forecast
+            } else forecast
         } catch (e: NoConnectivityException) {
             Log.e("Connectivity", "No internet connection.", e)
         }
@@ -86,7 +59,7 @@ class WeatherNetworkDataSourceImpl(
                     response.list[id].temp.min.toInt(),
                     Wind(response.list[id].deg, response.list[id].speed),
                     response.list[id].weather[0].description,
-                    response.list[id].weather[0].icon,
+                    getWeatherPicture(response.list[id].weather[0].icon),
                     Location(response.city.lat, response.city.lon, response.city.name),
                     response.list[id].dt.toLong()
             ))
@@ -106,12 +79,36 @@ class WeatherNetworkDataSourceImpl(
                 Wind(fetchedCurrentWeather.wind.deg, fetchedCurrentWeather.wind.speed),
 
                 fetchedCurrentWeather.weather[id].description,
-                fetchedCurrentWeather.weather[id].icon,
+                getWeatherPicture(fetchedCurrentWeather.weather[id].icon),
                 Location(fetchedCurrentWeather.coord.lat,
                         fetchedCurrentWeather.coord.lon,
                         fetchedCurrentWeather.name
                 ),
                 fetchedCurrentWeather.dt.toLong()
         )
+    }
+
+    private fun getWeatherPicture(icon: String): Int {
+        when (icon) {
+            "01d" -> return R.drawable.ic_weather_icons_02
+            "01n" -> return R.drawable.ic_weather_icons_02
+            "02d" -> return R.drawable.ic_weather_icons_05
+            "02n" -> return R.drawable.ic_weather_icons_05
+            "03d" -> return R.drawable.ic_weather_icons_03
+            "03n" -> return R.drawable.ic_weather_icons_03
+            "04d" -> return R.drawable.ic_weather_icons_04
+            "04n" -> return R.drawable.ic_weather_icons_04
+            "09d" -> return R.drawable.ic_weather_icons_12
+            "09n" -> return R.drawable.ic_weather_icons_12
+            "10d" -> return R.drawable.ic_weather_icons_08
+            "10n" -> return R.drawable.ic_weather_icons_08
+            "11d" -> return R.drawable.ic_weather_icons_06
+            "11n" -> return R.drawable.ic_weather_icons_06
+            "13d" -> return R.drawable.ic_weather_icons_10
+            "13n" -> return R.drawable.ic_weather_icons_10
+            "50d" -> return R.drawable.ic_weather_icons_09
+            "50n" -> return R.drawable.ic_weather_icons_09
+            else -> return R.drawable.ic_weather_icons_02
+        }
     }
 }

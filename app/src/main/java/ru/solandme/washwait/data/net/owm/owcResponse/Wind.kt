@@ -1,4 +1,4 @@
-package ru.solandme.washwait.data.net.OWCResponse
+package ru.solandme.washwait.data.net.owm.owcResponse
 
 data class Wind(
         val deg: Double,

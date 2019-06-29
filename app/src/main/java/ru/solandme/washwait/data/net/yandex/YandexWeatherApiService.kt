@@ -1,4 +1,4 @@
-package ru.solandme.washwait.data.net
+package ru.solandme.washwait.data.net.yandex
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
@@ -8,54 +8,34 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Query
-import ru.solandme.washwait.data.net.OWCResponse.OWCurrentWeatherResponse
-import ru.solandme.washwait.data.net.OWFResponse.OWForecastResponse
+import ru.solandme.washwait.data.net.yandex.yResponse.YWeatherResponse
 import ru.solandme.washwait.data.net.interceptors.ConnectivityInterceptor
 
-const val API_KEY = "8c809aface8967d960a0bec0db127446"
-const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
+const val BASE_URL = "https://api.weather.yandex.ru/v1/"
 
+interface YandexWeatherApiService {
 
-interface OpenWeatherApiService {
-
-    @GET("weather")
-    fun getCurrentWeatherByCoordinatesAsync(
+    @Headers("X-Yandex-API-Key: 39a777ef-021e-4073-9767-5b139f242755")
+    @GET("forecast")
+    fun getForecastWeatherAsync(
             @Query("lat") lat: String,
             @Query("lon") lon: String,
-            @Query("units") units: String = "metric",
-            @Query("lang") language: String = "ru"): Deferred<Response<OWCurrentWeatherResponse>>
-
-    @GET("weather")
-    fun getCurrentWeatherByCityAsync(
-            @Query("q") location: String = "London",
-            @Query("units") units: String = "metric",
-            @Query("lang") language: String = "ru"): Deferred<Response<OWCurrentWeatherResponse>>
-
-    @GET("forecast/daily")
-    fun getForecastWeatherByCoordinatesAsync(
-            @Query("lat") lat: String,
-            @Query("lon") lon: String,
-            @Query("units") units: String = "metric",
-            @Query("lang") language: String = "ru",
-            @Query("cnt") cnt: String = "10"): Deferred<Response<OWForecastResponse>>
-
-    @GET("forecast/daily")
-    fun getForecastWeatherByCityAsync(
-            @Query("q") location: String = "London",
-            @Query("units") units: String = "metric",
-            @Query("lang") language: String = "ru",
-            @Query("cnt") cnt: String = "10"): Deferred<Response<OWForecastResponse>>
+            @Query("hours") hours: String = "false",
+            @Query("lang") language: String = "ru-Ru",
+            @Query("limit") limit: String = "7",
+            @Query("extra") extra: String = "true"
+            ): Deferred<Response<YWeatherResponse>>
 
     companion object {
         fun getWeatherApi(
                 connectivityInterceptor: ConnectivityInterceptor
-        ): OpenWeatherApiService {
+        ): YandexWeatherApiService {
             val requestInterceptor = Interceptor { chain ->
                 val url = chain.request()
                         .url()
                         .newBuilder()
-                        .addQueryParameter("appId", API_KEY)
                         .build()
                 val request = chain.request()
                         .newBuilder()
@@ -74,7 +54,7 @@ interface OpenWeatherApiService {
                     .addCallAdapterFactory(CoroutineCallAdapterFactory())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
-                    .create(OpenWeatherApiService::class.java)
+                    .create(YandexWeatherApiService::class.java)
         }
     }
 }
