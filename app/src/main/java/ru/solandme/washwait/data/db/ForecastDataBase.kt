@@ -9,7 +9,7 @@ import ru.solandme.washwait.data.db.entity.WeatherEntity
 
 @Database(
         entities = [WeatherEntity::class],
-        version = 1
+        version = 2
 )
 abstract class ForecastDataBase : RoomDatabase() {
     abstract fun weatherDao(): WeatherDAO
@@ -25,7 +25,8 @@ abstract class ForecastDataBase : RoomDatabase() {
 
         private fun buildDatabase(context: Context) =
                 Room.databaseBuilder(context.applicationContext,
-                        ForecastDataBase::class.java, "forecast.db")
+                        ForecastDataBase::class.java, "drydrive.db")
+                        .fallbackToDestructiveMigration()
                         .build()
     }
 }

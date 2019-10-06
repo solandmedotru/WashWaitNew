@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.extensions.LayoutContainer
 import ru.solandme.washwait.R
 import ru.solandme.washwait.data.db.entity.WeatherEntity
 import java.util.*
 
 
-class RWForecastAdapter : RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>() {
-    var weatherForecasts: List<WeatherEntity> = emptyList()
+class RWForecastAdapter(private val listener: (WeatherEntity) -> Unit) : RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>() {
+    private var weatherForecasts: List<WeatherEntity> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherHolder {
         return WeatherHolder(LayoutInflater.from(parent.context)
@@ -20,7 +21,7 @@ class RWForecastAdapter : RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>(
     }
 
     override fun onBindViewHolder(holder: WeatherHolder, position: Int) {
-        holder.bind(weatherForecasts[position])
+        holder.bind(weatherForecasts[position], listener)
     }
 
     override fun getItemCount() = weatherForecasts.size
@@ -30,25 +31,32 @@ class RWForecastAdapter : RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>(
         notifyDataSetChanged()
     }
 
-    inner class WeatherHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(weather: WeatherEntity) {
-            val textTempMax = itemView.findViewById(R.id.rw_text_temp_max) as TextView
-            val textTempMin = itemView.findViewById(R.id.rw_text_temp_min) as TextView
-            val textDescribe = itemView.findViewById(R.id.rw_text_describe) as TextView
-            val textDay = itemView.findViewById(R.id.rw_text_day) as TextView
-            val weatherIcon = itemView.findViewById(R.id.rw_weather_icon) as ImageView
+    inner class WeatherHolder(itemView: View) : RecyclerView.ViewHolder(itemView), LayoutContainer {
+        override val containerView: View?
+            get() = itemView
+
+        fun bind(weather: WeatherEntity, listener: (WeatherEntity) -> Unit) {
+            val textTempMax = itemView.findViewById<TextView>(R.id.rw_text_temp_max)
+            val textTempMin = itemView.findViewById<TextView>(R.id.rw_text_temp_min)
+            val textDescribe = itemView.findViewById<TextView>(R.id.rw_text_describe)
+            val textDay = itemView.findViewById<TextView>(R.id.rw_text_day)
+            val weatherIcon = itemView.findViewById<ImageView>(R.id.rw_weather_icon)
 
             textTempMin.text = weather.tempMin.toString() + "\u2103"
             textTempMax.text = weather.tempMax.toString() + "\u2103"
             textDescribe.text = weather.description
             textDay.text = getFormattedDate(weather.lastUpdate)
             weatherIcon.setImageResource(weather.icon)
+
+            itemView.setOnClickListener{
+                listener.invoke(weather)
+            }
         }
     }
 
     fun getFormattedDate(timestamp: Long): String {
         val instance = Calendar.getInstance()
-        instance.timeInMillis = timestamp*1000L
+        instance.timeInMillis = timestamp * 1000L
         return String.format("%ta, %te %tb", instance, instance, instance)
     }
 }

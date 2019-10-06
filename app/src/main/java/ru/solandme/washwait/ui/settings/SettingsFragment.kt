@@ -28,7 +28,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClic
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_limit_key)))
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_forecast_providers_key)));
 
-        cityPref = findPreference(resources.getString(R.string.pref_city_key))
+//        cityPref = findPreference(getString(R.string.pref_city_key)) TODO Разобраться почему не работает
         cityPref.onPreferenceClickListener = this
     }
 
@@ -59,8 +59,10 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClic
         }
     }
 
-    private fun bindPreferenceSummaryToValue(preference: Preference) {
-        preference.onPreferenceChangeListener = this
+    private fun bindPreferenceSummaryToValue(preference: Preference?) {
+        if (preference != null) {
+            preference.onPreferenceChangeListener = this
+        }
 
         if (preference is ListPreference) {
             onPreferenceChange(preference,

@@ -24,4 +24,7 @@ interface WeatherDAO {
 
     @Query("SELECT * FROM weather ORDER BY id")
     fun getWeathers(): LiveData<List<WeatherEntity>>
+
+    @Query("SELECT lastUpdate FROM weather where id = $CURRENT_WEATHER_ID")
+    fun getLastUpdate(): LiveData<Long>
 }

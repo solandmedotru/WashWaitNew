@@ -2,6 +2,7 @@ package ru.solandme.washwait.data.net.owm
 
 import android.util.Log
 import ru.solandme.washwait.R
+import ru.solandme.washwait.data.db.entity.Advices
 import ru.solandme.washwait.data.db.entity.Location
 import ru.solandme.washwait.data.db.entity.WeatherEntity
 import ru.solandme.washwait.data.db.entity.Wind
@@ -9,6 +10,7 @@ import ru.solandme.washwait.internal.NoConnectivityException
 import ru.solandme.washwait.data.net.owm.owcResponse.OWCurrentWeatherResponse
 import ru.solandme.washwait.data.net.owm.owfResponse.OWForecastResponse
 import ru.solandme.washwait.data.net.WeatherNetworkDataSource
+import ru.solandme.washwait.data.net.owm.owfResponse.X
 
 class OWNetworkDataSourceImpl(
         private val openWeatherApiService: OpenWeatherApiService
@@ -59,12 +61,40 @@ class OWNetworkDataSourceImpl(
                     response.list[id].temp.min.toInt(),
                     Wind(response.list[id].deg, response.list[id].speed),
                     response.list[id].weather[0].description,
+                    getAdvices(response.list[id].weather[0].id),
                     getWeatherPicture(response.list[id].weather[0].icon),
                     Location(response.city.lat, response.city.lon, response.city.name),
                     response.list[id].dt.toLong()
             ))
         }
         return forecast
+    }
+
+    private fun getAdvices(response: Int): Advices {
+        var needGlasses = false
+        var needUmbrella = false
+        var needWash = false
+        var needLight = false
+        var needWear = false
+
+        when (response) {
+            in 200..531 -> {
+                needUmbrella = true
+                needWash = false
+            }
+            in 600..622 -> {
+                needWear = true
+                needWash = false
+            }
+            in 700..761 -> {
+                needLight = true
+            }
+            800 -> {
+                needGlasses = true
+            }
+        }
+        return Advices(needGlasses, needUmbrella, needWash, needLight, needWear)
+
     }
 
 
@@ -77,8 +107,8 @@ class OWNetworkDataSourceImpl(
                 fetchedCurrentWeather.main.tempMax.toInt(),
                 fetchedCurrentWeather.main.tempMin.toInt(),
                 Wind(fetchedCurrentWeather.wind.deg, fetchedCurrentWeather.wind.speed),
-
                 fetchedCurrentWeather.weather[id].description,
+                getAdvices(fetchedCurrentWeather.id),
                 getWeatherPicture(fetchedCurrentWeather.weather[id].icon),
                 Location(fetchedCurrentWeather.coord.lat,
                         fetchedCurrentWeather.coord.lon,

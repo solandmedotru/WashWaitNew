@@ -7,8 +7,10 @@ import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.weather_fragment.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -20,13 +22,11 @@ import ru.solandme.washwait.ui.forecast.ForecastWeatherViewModelFactory
 import ru.solandme.washwait.ui.forecast.RWForecastAdapter
 import kotlin.math.roundToInt
 
-class WeatherFragment : Fragment(), KodeinAware {
+class WeatherFragment : Fragment(R.layout.weather_fragment), KodeinAware {
     override val kodein by kodein()
     private val currentWeatherViewModelFactory: CurrentWeatherViewModelFactory by instance()
     private val forecastWeatherViewModelFactory: ForecastWeatherViewModelFactory by instance()
-    private val rwForecastAdapter by lazy {
-        RWForecastAdapter()
-    }
+    private lateinit var rwForecastAdapter: RWForecastAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.weather_fragment, container, false)
@@ -34,17 +34,31 @@ class WeatherFragment : Fragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        rwForecasts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rwForecasts.adapter = rwForecastAdapter
+        initViews()
+        initViewModels()
+    }
 
-        val currentWeatherViewModel = ViewModelProviders.of(this, currentWeatherViewModelFactory).get(CurrentWeatherViewModel::class.java)
+    private fun initViews() {
+        rwForecastAdapter = RWForecastAdapter {
+            Snackbar.make(rwForecasts, "В этот день ${it.description}", Snackbar.LENGTH_SHORT).show() //TODO реализовать ответ, "В этот день лучше не мыть машину" или "В этот день можно мыть машину"
+        }
+        with(rwForecasts) {
+            adapter = rwForecastAdapter
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            val divider = DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
+            addItemDecoration(divider)
+        }
+    }
+
+    private fun initViewModels() {
+        val currentWeatherViewModel = ViewModelProvider(this, currentWeatherViewModelFactory).get(CurrentWeatherViewModel::class.java)
         currentWeatherViewModel.getWeather().observe(this, Observer<WeatherEntity> {
             if (null != it) {
                 fillWeatherCard(it)
             }
         })
 
-        val forecastWeatherViewModel = ViewModelProviders.of(this, forecastWeatherViewModelFactory).get(ForecastWeatherViewModel::class.java)
+        val forecastWeatherViewModel = ViewModelProvider(this, forecastWeatherViewModelFactory).get(ForecastWeatherViewModel::class.java)
         forecastWeatherViewModel.getForecastWeather().observe(this, Observer<List<WeatherEntity>> {
             if (null != it) {
                 rwForecastAdapter.addItems(it)
@@ -52,7 +66,7 @@ class WeatherFragment : Fragment(), KodeinAware {
         })
 
         currentWeatherViewModel.getProgressState().observe(this, Observer<Boolean> {
-            if(it) {
+            if (it) {
                 progress_Bar.visibility = VISIBLE
             } else {
                 progress_Bar.visibility = GONE
@@ -69,6 +83,7 @@ class WeatherFragment : Fragment(), KodeinAware {
         weatherIcon.setImageResource(entity.icon)
 
         tw_city_name.text = entity.location.locationName
+
     }
 
     private fun getWindRes(direction: Double): Int {

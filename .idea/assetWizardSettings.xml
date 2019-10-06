@@ -141,11 +141,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="30" />
-                            <entry key="outputName" value="ic_direction_down_left" />
-                            <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\User\Downloads\weather-icons-master\weather-icons-master\svg\wi-direction-down-left.svg" />
-                            <entry key="width" value="30" />
+                            <entry key="outputName" value="ic_hat" />
+                            <entry key="sourceFile" value="C:\Users\User\Downloads\3856375-beanie-christmas-snow-winter_112777.svg" />
                           </map>
                         </option>
                       </PersistentState>
