@@ -84,6 +84,13 @@ class WeatherFragment : Fragment(R.layout.weather_fragment), KodeinAware {
 
         tw_city_name.text = entity.location.locationName
 
+        with(entity.advices){
+            if (needGlasses) glasses_icon.visibility = VISIBLE  else glasses_icon.visibility = GONE
+            if (needUmbrella) umbrella_icon.visibility = VISIBLE  else umbrella_icon.visibility = GONE
+            if (needWash) car_wash_icon.visibility = VISIBLE  else car_wash_icon.visibility = GONE
+            if (needLight) car_light_icon.visibility = VISIBLE  else car_light_icon.visibility = GONE
+            if (needWear) hat_icon.visibility = VISIBLE  else hat_icon.visibility = GONE
+        }
     }
 
     private fun getWindRes(direction: Double): Int {
