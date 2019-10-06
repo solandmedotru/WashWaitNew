@@ -1,6 +1,6 @@
 # DryDrive Android application (old version was WashWait)
 
-## App show when need wash car.
+## Android App select the best day to wash your car, direct to the nearest car washes
 
 Project use:
 * Kotlin

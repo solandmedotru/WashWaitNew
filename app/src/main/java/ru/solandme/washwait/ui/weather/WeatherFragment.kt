@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.weather_fragment.*
 import org.kodein.di.KodeinAware
@@ -45,8 +46,7 @@ class WeatherFragment : Fragment(R.layout.weather_fragment), KodeinAware {
         with(rwForecasts) {
             adapter = rwForecastAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            val divider = DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL)
-            addItemDecoration(divider)
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
     }
 

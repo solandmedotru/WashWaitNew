@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import ru.solandme.washwait.R
@@ -13,7 +14,7 @@ import java.util.*
 
 
 class RWForecastAdapter(private val listener: (WeatherEntity) -> Unit) : RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>() {
-    private var weatherForecasts: List<WeatherEntity> = emptyList()
+    private var weatherForecasts: MutableList<WeatherEntity> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherHolder {
         return WeatherHolder(LayoutInflater.from(parent.context)
@@ -27,7 +28,11 @@ class RWForecastAdapter(private val listener: (WeatherEntity) -> Unit) : Recycle
     override fun getItemCount() = weatherForecasts.size
 
     fun addItems(weatherForecasts: List<WeatherEntity>) {
-        this.weatherForecasts = weatherForecasts
+        val diffUtilCallback = MyDiffUtilCallback(this.weatherForecasts, weatherForecasts)
+        val diffResult = DiffUtil.calculateDiff(diffUtilCallback, true)
+        diffResult.dispatchUpdatesTo(this)
+        this.weatherForecasts.clear()
+        this.weatherForecasts.addAll(weatherForecasts)
         notifyDataSetChanged()
     }
 
@@ -48,7 +53,7 @@ class RWForecastAdapter(private val listener: (WeatherEntity) -> Unit) : Recycle
             textDay.text = getFormattedDate(weather.lastUpdate)
             weatherIcon.setImageResource(weather.icon)
 
-            itemView.setOnClickListener{
+            itemView.setOnClickListener {
                 listener.invoke(weather)
             }
         }
@@ -59,4 +64,19 @@ class RWForecastAdapter(private val listener: (WeatherEntity) -> Unit) : Recycle
         instance.timeInMillis = timestamp * 1000L
         return String.format("%ta, %te %tb", instance, instance, instance)
     }
+}
+
+class MyDiffUtilCallback(
+        private val oldList: List<WeatherEntity>,
+        private val newList: List<WeatherEntity>
+) : DiffUtil.Callback() {
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = oldList[oldItemPosition].id == newList[newItemPosition].id
+
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldList[oldItemPosition].hashCode() == newList[newItemPosition].hashCode()
+    }
+
+    override fun getOldListSize() = oldList.size
+    override fun getNewListSize() = newList.size
 }
