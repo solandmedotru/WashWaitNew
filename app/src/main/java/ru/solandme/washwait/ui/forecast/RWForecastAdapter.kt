@@ -14,7 +14,7 @@ import java.util.*
 
 
 class RWForecastAdapter(private val listener: (WeatherEntity) -> Unit) : RecyclerView.Adapter<RWForecastAdapter.WeatherHolder>() {
-    private var weatherForecasts: MutableList<WeatherEntity> = mutableListOf()
+    private var mWeatherForecasts: MutableList<WeatherEntity> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherHolder {
         return WeatherHolder(LayoutInflater.from(parent.context)
@@ -22,18 +22,29 @@ class RWForecastAdapter(private val listener: (WeatherEntity) -> Unit) : Recycle
     }
 
     override fun onBindViewHolder(holder: WeatherHolder, position: Int) {
-        holder.bind(weatherForecasts[position], listener)
+        holder.bind(mWeatherForecasts[position], listener)
     }
 
-    override fun getItemCount() = weatherForecasts.size
+    override fun getItemCount() = mWeatherForecasts.size
 
     fun addItems(weatherForecasts: List<WeatherEntity>) {
-        val diffUtilCallback = MyDiffUtilCallback(this.weatherForecasts, weatherForecasts)
+
+        val diffUtilCallback = object : DiffUtil.Callback() {
+            override fun areItemsTheSame(oldPos: Int, newPos: Int): Boolean =
+                    mWeatherForecasts[oldPos].id == weatherForecasts[newPos].id
+
+            override fun areContentsTheSame(oldPos: Int, newPos: Int): Boolean =
+                    mWeatherForecasts[oldPos].hashCode() == weatherForecasts[newPos].hashCode()
+
+            override fun getOldListSize() = mWeatherForecasts.size
+
+            override fun getNewListSize() = weatherForecasts.size
+        }
+
         val diffResult = DiffUtil.calculateDiff(diffUtilCallback, true)
+        mWeatherForecasts.clear()
+        mWeatherForecasts.addAll(weatherForecasts)
         diffResult.dispatchUpdatesTo(this)
-        this.weatherForecasts.clear()
-        this.weatherForecasts.addAll(weatherForecasts)
-        notifyDataSetChanged()
     }
 
     inner class WeatherHolder(itemView: View) : RecyclerView.ViewHolder(itemView), LayoutContainer {
@@ -64,19 +75,4 @@ class RWForecastAdapter(private val listener: (WeatherEntity) -> Unit) : Recycle
         instance.timeInMillis = timestamp * 1000L
         return String.format("%ta, %te %tb", instance, instance, instance)
     }
-}
-
-class MyDiffUtilCallback(
-        private val oldList: List<WeatherEntity>,
-        private val newList: List<WeatherEntity>
-) : DiffUtil.Callback() {
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = oldList[oldItemPosition].id == newList[newItemPosition].id
-
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].hashCode() == newList[newItemPosition].hashCode()
-    }
-
-    override fun getOldListSize() = oldList.size
-    override fun getNewListSize() = newList.size
 }
