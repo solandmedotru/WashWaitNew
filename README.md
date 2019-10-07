@@ -4,7 +4,11 @@
 
 Project use:
 * Kotlin
-* Android architecture components
-* DI lib Kodein
 * JetPack
-* Weather REST API
+* Android architecture components
+** LiveData
+** Navigation
+** Room
+* DI lib Kodein
+* Open Weather REST API
+* MVVM pattern

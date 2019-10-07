@@ -75,14 +75,15 @@ class WeatherFragment : Fragment(R.layout.weather_fragment), KodeinAware {
     }
 
     private fun fillWeatherCard(entity: WeatherEntity) {
-        textTemp.text = entity.temp.toString() + "\u2103"
-        textHumidity.text = entity.humidity.toString()
-        textBarometer.text = entity.pressure.toString()
-        textSpeedWind.text = entity.wind.speed.toString()
-        textWindDir.text = getString(getWindRes(entity.wind.deg))
-        weatherIcon.setImageResource(entity.icon)
-
-        tw_city_name.text = entity.location.locationName
+        with(entity){
+            textTemp.text = temp.toString() + "\u2103"
+            textHumidity.text = humidity.toString()
+            textBarometer.text = pressure.toString()
+            textSpeedWind.text = wind.speed.toString()
+            textWindDir.text = getString(getWindRes(wind.deg))
+            weatherIcon.setImageResource(icon)
+            tw_city_name.text = location.locationName
+        }
 
         with(entity.advices){
             if (needGlasses) glasses_icon.visibility = VISIBLE  else glasses_icon.visibility = GONE
