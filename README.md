@@ -5,10 +5,7 @@
 Project use:
 * Kotlin
 * JetPack
-* Android architecture components
-- LiveData
-- Navigation
-- Room
+* Android architecture components (LiveData, ViewModel, Navigation, Room)
 * DI lib Kodein
 * Open Weather REST API
 * MVVM pattern
