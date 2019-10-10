@@ -12,13 +12,13 @@ class CurrentWeatherViewModel(private val repository: WeatherRepository) : ViewM
 
     fun getWeather(): LiveData<WeatherEntity> {
         showProgress.postValue(true)
-        return Transformations.map(repository.getCurrentWeather()){
+        return Transformations.map(repository.getCurrentWeather()) {
             showProgress.postValue(false)
             return@map it
         }
     }
 
-    fun getProgressState() : MutableLiveData<Boolean>{
+    fun getProgressState(): MutableLiveData<Boolean> {
         return showProgress
     }
 }

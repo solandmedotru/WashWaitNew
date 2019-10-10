@@ -9,9 +9,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import ru.solandme.washwait.data.net.interceptors.ConnectivityInterceptor
 import ru.solandme.washwait.data.net.owm.owcResponse.OWCurrentWeatherResponse
 import ru.solandme.washwait.data.net.owm.owfResponse.OWForecastResponse
-import ru.solandme.washwait.data.net.interceptors.ConnectivityInterceptor
 
 const val API_KEY = "8c809aface8967d960a0bec0db127446"
 const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
@@ -77,9 +77,4 @@ interface OpenWeatherApiService {
                     .create(OpenWeatherApiService::class.java)
         }
     }
-}
-
-sealed class Result<out T : Any> {
-    data class Success<out T : Any>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
 }

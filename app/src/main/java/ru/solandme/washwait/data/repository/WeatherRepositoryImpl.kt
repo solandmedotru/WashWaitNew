@@ -1,12 +1,12 @@
 package ru.solandme.washwait.data.repository
 
 import android.content.Context
-import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.solandme.washwait.R
 import ru.solandme.washwait.data.db.WeatherDAO
 import ru.solandme.washwait.data.db.entity.WeatherEntity
@@ -26,18 +26,18 @@ class WeatherRepositoryImpl(
     private val unitsFromPref = preferences.getString(context.resources.getString(R.string.pref_units_key), "metric")
     private lateinit var weatherNetworkDataSource: WeatherNetworkDataSource
 
-    @UiThread
     override fun getForecastWeather(): LiveData<List<WeatherEntity>> {
         weatherNetworkDataSource = owNetworkDataSourceImpl //TODO реализовать выбор проввайдера на основе сохраненных настроек
 
-        GlobalScope.launch(Dispatchers.IO) {
-            val fetchForecastWeather = weatherNetworkDataSource.getForecastWeather(cityFromPref, unitsFromPref, languageFromPref)
+        GlobalScope.launch {
+            val fetchForecastWeather = withContext(Dispatchers.IO) {
+                weatherNetworkDataSource.getForecastWeather(cityFromPref, unitsFromPref, languageFromPref)
+            }
             weatherDAO.insertAll(fetchForecastWeather)
         }
         return weatherDAO.getWeathers()
     }
 
-    @UiThread
     override fun getCurrentWeather(): LiveData<WeatherEntity> {
         return weatherDAO.getCurrentWeather()
     }

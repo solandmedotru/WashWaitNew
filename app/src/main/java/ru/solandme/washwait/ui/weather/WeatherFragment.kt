@@ -3,12 +3,12 @@ package ru.solandme.washwait.ui.weather
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
@@ -75,7 +75,7 @@ class WeatherFragment : Fragment(R.layout.weather_fragment), KodeinAware {
     }
 
     private fun fillWeatherCard(entity: WeatherEntity) {
-        with(entity){
+        with(entity) {
             textTemp.text = temp.toString() + "\u2103"
             textHumidity.text = humidity.toString()
             textBarometer.text = pressure.toString()
@@ -85,12 +85,12 @@ class WeatherFragment : Fragment(R.layout.weather_fragment), KodeinAware {
             tw_city_name.text = location.locationName
         }
 
-        with(entity.advices){
-            if (needGlasses) glasses_icon.visibility = VISIBLE  else glasses_icon.visibility = GONE
-            if (needUmbrella) umbrella_icon.visibility = VISIBLE  else umbrella_icon.visibility = GONE
-            if (needWash) car_wash_icon.visibility = VISIBLE  else car_wash_icon.visibility = GONE
-            if (needLight) car_light_icon.visibility = VISIBLE  else car_light_icon.visibility = GONE
-            if (needWear) hat_icon.visibility = VISIBLE  else hat_icon.visibility = GONE
+        with(entity.advices) {
+            if (needGlasses) glasses_icon.visibility = VISIBLE else glasses_icon.visibility = GONE
+            if (needUmbrella) umbrella_icon.visibility = VISIBLE else umbrella_icon.visibility = GONE
+            if (needWash) car_wash_icon.visibility = VISIBLE else car_wash_icon.visibility = GONE
+            if (needLight) car_light_icon.visibility = VISIBLE else car_light_icon.visibility = GONE
+            if (needWear) hat_icon.visibility = VISIBLE else hat_icon.visibility = GONE
         }
     }
 
