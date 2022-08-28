@@ -33,8 +33,8 @@ class WeatherFragment : Fragment(R.layout.weather_fragment), KodeinAware {
         return inflater.inflate(R.layout.weather_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initViews()
         initViewModels()
     }
@@ -52,21 +52,21 @@ class WeatherFragment : Fragment(R.layout.weather_fragment), KodeinAware {
 
     private fun initViewModels() {
         val currentWeatherViewModel = ViewModelProvider(this, currentWeatherViewModelFactory).get(CurrentWeatherViewModel::class.java)
-        currentWeatherViewModel.getWeather().observe(this, Observer<WeatherEntity> {
-            if (null != it) {
-                fillWeatherCard(it)
+        currentWeatherViewModel.getWeather().observe(this, Observer<WeatherEntity> { weatherEntity ->
+            if (null != weatherEntity) {
+                fillWeatherCard(weatherEntity)
             }
         })
 
         val forecastWeatherViewModel = ViewModelProvider(this, forecastWeatherViewModelFactory).get(ForecastWeatherViewModel::class.java)
-        forecastWeatherViewModel.getForecastWeather().observe(this, Observer<List<WeatherEntity>> {
-            if (null != it) {
-                rwForecastAdapter.addItems(it)
+        forecastWeatherViewModel.getForecastWeather().observe(this, Observer<List<WeatherEntity>> { weatherEntities ->
+            if (null != weatherEntities) {
+                rwForecastAdapter.addItems(weatherEntities)
             }
         })
 
-        currentWeatherViewModel.getProgressState().observe(this, Observer<Boolean> {
-            if (it) {
+        currentWeatherViewModel.progressBar.observe(this, Observer<Boolean> { progressState ->
+            if (progressState) {
                 progress_Bar.visibility = VISIBLE
             } else {
                 progress_Bar.visibility = GONE

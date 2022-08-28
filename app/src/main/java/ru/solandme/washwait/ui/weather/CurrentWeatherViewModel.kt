@@ -8,17 +8,14 @@ import ru.solandme.washwait.data.db.entity.WeatherEntity
 import ru.solandme.washwait.data.repository.WeatherRepository
 
 class CurrentWeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
-    private var showProgress: MutableLiveData<Boolean> = MutableLiveData()
+    private var progressBarMutable: MutableLiveData<Boolean> = MutableLiveData()
+    val progressBar: LiveData<Boolean> = progressBarMutable
 
     fun getWeather(): LiveData<WeatherEntity> {
-        showProgress.postValue(true)
-        return Transformations.map(repository.getCurrentWeather()) {
-            showProgress.postValue(false)
-            return@map it
+        progressBarMutable.postValue(true)
+        return Transformations.map(repository.getCurrentWeather()) { weatherEntity ->
+            progressBarMutable.postValue(false)
+            return@map weatherEntity
         }
-    }
-
-    fun getProgressState(): MutableLiveData<Boolean> {
-        return showProgress
     }
 }

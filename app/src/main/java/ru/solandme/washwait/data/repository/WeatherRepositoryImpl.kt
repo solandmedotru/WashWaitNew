@@ -3,10 +3,7 @@ package ru.solandme.washwait.data.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.preference.PreferenceManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import ru.solandme.washwait.R
 import ru.solandme.washwait.data.db.WeatherDAO
 import ru.solandme.washwait.data.db.entity.WeatherEntity
@@ -29,7 +26,7 @@ class WeatherRepositoryImpl(
     override fun getForecastWeather(): LiveData<List<WeatherEntity>> {
         weatherNetworkDataSource = owNetworkDataSourceImpl //TODO реализовать выбор проввайдера на основе сохраненных настроек
 
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val fetchForecastWeather = withContext(Dispatchers.IO) {
                 weatherNetworkDataSource.getForecastWeather(cityFromPref, unitsFromPref, languageFromPref)
             }
@@ -43,7 +40,7 @@ class WeatherRepositoryImpl(
     }
 
     fun saveCity(city: String) {
-        GlobalScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             val editor = preferences.edit()
             editor.putString(context.resources.getString(R.string.pref_city_key), city)
             editor.apply()
